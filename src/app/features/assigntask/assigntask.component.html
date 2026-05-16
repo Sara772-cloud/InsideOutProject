@@ -1,0 +1,399 @@
+<div
+  class="bg-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <app-sidebar></app-sidebar>
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto bg-light dark:bg-background-dark p-8">
+      <div class="max-w-7xl mx-auto space-y-8">
+        <!-- Page Header -->
+        <div class="flex flex-col gap-1">
+          <h2
+            class="text-3xl font-black text-slate-900 dark:text-white tracking-tight"
+          >
+            Assign Task
+          </h2>
+          <p class="text-slate-500 dark:text-slate-400 mt-1">
+            Create personalized Tasks for your Patients.
+          </p>
+        </div>
+        <!-- STEP 1: SELECT CHILD -->
+        <section
+          class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-primary/10"
+        >
+          <div class="flex items-center gap-4 mb-6">
+            <div
+              class="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center font-bold"
+            >
+              1
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">
+              Step 1: Select Child
+            </h3>
+          </div>
+          <!-- ** selection boxes -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Parent Dropdown -->
+            <div class="space-y-4">
+              <label class="block">
+                <span
+                  class="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1"
+                  >Parent Name</span
+                >
+                <div class="mt-1 relative">
+                  <select
+                    (change)="
+                      selectedParent = Parents[$any($event.target).value];
+                      selectedChild = null
+                    "
+                    class="w-full h-14 pl-4 pr-10 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  >
+                    <option value="">Select Parent</option>
+                    @for (parent of Parents; track parent.id; let i = $index) {
+                      <option [value]="i">{{ parent.name }}</option>
+                    }
+                  </select>
+                </div>
+              </label>
+            </div>
+
+            <!-- Child Dropdown -->
+            <div class="space-y-4">
+              <label class="block">
+                <span
+                  class="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1"
+                  >Child Name</span
+                >
+                <div class="mt-1 relative">
+                  <select
+                    (change)="
+                      selectedChild = selectedParent
+                        ? selectedParent.children[$any($event.target).value]
+                        : null
+                    "
+                    class="w-full h-14 pl-4 pr-10 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  >
+                    <option value="">Select Child</option>
+                    @for (
+                      child of selectedParent?.children;
+                      track child.id;
+                      let i = $index
+                    ) {
+                      <option [value]="i">{{ child.name }}</option>
+                    }
+                  </select>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+        <div class="flex items-center gap-4 py-4">
+          <div class="h-px bg-primary/10 flex-1"></div>
+          <div
+            class="bg-primary/10 text-primary w-10 h-10 rounded-full flex items-center justify-center font-bold"
+          >
+            2
+          </div>
+          <h3
+            class="text-xl font-bold text-slate-900 dark:text-white whitespace-nowrap"
+          >
+            Step 2: Choose Task Method
+          </h3>
+          <div class="h-px bg-primary/10 flex-1"></div>
+        </div>
+        <!-- STEP 2: THREE COLUMN LAYOUT -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- COLUMN A: Predefined Library -->
+          <div
+            class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col h-full"
+          >
+            <div class="flex items-center gap-3 mb-6">
+              <span class="material-symbols-outlined text-primary"
+                >library_books</span
+              >
+              <h4 class="font-bold text-lg text-slate-900 dark:text-white">
+                Predefined Library
+              </h4>
+            </div>
+
+            <div class="relative mb-6">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl"
+                >search</span
+              >
+              <input
+                class="w-full pl-10 pr-4 py-3 rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary/20 transition-all"
+                placeholder="Search templates..."
+                type="text"
+              />
+            </div>
+
+            <div
+              class="flex-1 space-y-3 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar"
+            >
+              @for (preTask of PredeTasks; track preTask.id) {
+                <!-- 
+        ليه [class.ring-2]؟
+        عشان لما تتختار الـ card يبين عليها border بنفسجي
+        يعني الـ specialist تعرف إيه اللي اتختار
+      -->
+                <div
+                  (click)="selectPredefinedTask(preTask)"
+                  [class.ring-2]="selectedPredefinedTaskId === preTask.id"
+                  [class.ring-primary]="selectedPredefinedTaskId === preTask.id"
+                  [class.bg-primary-5]="selectedPredefinedTaskId === preTask.id"
+                  class="group p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all cursor-pointer"
+                >
+                  <div class="flex justify-between items-start mb-1">
+                    <span
+                      class="text-[10px] font-bold uppercase tracking-widest text-violet-600"
+                    >
+                      {{ preTask.taskType }}
+                    </span>
+                    <!-- الأيقونة دي بتتغير: لو اتختارت بتبقى check، لو لأ بتبقى add -->
+                    @if (selectedPredefinedTaskId === preTask.id) {
+                      <span
+                        class="material-symbols-outlined text-primary text-sm"
+                        >check_circle</span
+                      >
+                    } @else {
+                      <span
+                        class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                        >add_circle</span
+                      >
+                    }
+                  </div>
+                  <p
+                    class="text-sm font-bold text-slate-800 dark:text-slate-200"
+                  >
+                    {{ preTask.title }}
+                  </p>
+                  <p class="text-xs text-slate-500 mt-1">
+                    {{ preTask.description }}
+                  </p>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- COLUMN B: Manual Task Creator -->
+          <div
+            class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border-2 border-primary/20 flex flex-col h-full relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 bg-primary text-white px-3 py-1 rounded-bl-xl text-[10px] font-bold uppercase tracking-widest"
+            >
+              New Task
+            </div>
+            <div class="flex items-center gap-3 mb-6">
+              <span class="material-symbols-outlined text-primary"
+                >edit_note</span
+              >
+              <h4 class="font-bold text-lg text-slate-900 dark:text-white">
+                Manual Task Creator
+              </h4>
+            </div>
+
+            <!-- Success -->
+            @if (successMessage) {
+              <div
+                class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium"
+              >
+                ✅ {{ successMessage }}
+              </div>
+            }
+            <!-- Error -->
+            @if (errorMessage) {
+              <div
+                class="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm font-medium"
+              >
+                ⚠️ {{ errorMessage }}
+              </div>
+            }
+
+            <!-- 
+    ليه الـ badge ده؟
+    عشان الـ specialist تعرف إنها دلوقتي شغالة بـ predefined task
+    ولو حبت ترجع تكتب manually تضغط X فتتمسح البيانات
+  -->
+            @if (selectedPredefinedTaskId) {
+              <div
+                class="mb-4 flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-xl text-xs font-bold"
+              >
+                <span class="material-symbols-outlined text-sm"
+                  >library_books</span
+                >
+                Loaded from Predefined Library
+                <button
+                  (click)="resetForm()"
+                  class="ml-auto hover:text-red-500 transition-colors"
+                >
+                  <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+              </div>
+            }
+
+            <div class="space-y-4 flex-1">
+              <div>
+                <label
+                  class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1"
+                  >Task Title</label
+                >
+                <input
+                  [(ngModel)]="taskTitle"
+                  name="taskTitle"
+                  class="w-full mt-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary/20"
+                  placeholder="e.g., Weekly Vocabulary List"
+                  type="text"
+                />
+              </div>
+
+              <div>
+                <label
+                  class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1"
+                  >Detailed Instructions</label
+                >
+                <textarea
+                  [(ngModel)]="taskDescription"
+                  name="taskDescription"
+                  class="w-full mt-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary/20 resize-none"
+                  [placeholder]="
+                    'Describe the steps for ' +
+                    (selectedChild?.name ?? 'child') +
+                    '...'
+                  "
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1"
+                    >Due Date</label
+                  >
+                  <input
+                    [(ngModel)]="taskDueDate"
+                    name="taskDueDate"
+                    class="w-full mt-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary/20"
+                    type="date"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1"
+                    >Task Type</label
+                  >
+                  <select
+                    [(ngModel)]="taskType"
+                    name="taskType"
+                    class="w-full mt-1 h-11 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  >
+                    <option value="Real-world">Real-world</option>
+                    <option value="Mobile">Mobile</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-auto">
+                <button
+                  (click)="onAssignTask()"
+                  [disabled]="isLoading"
+                  class="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                  type="button"
+                >
+                  @if (isLoading) {
+                    <span class="material-symbols-outlined animate-spin"
+                      >progress_activity</span
+                    >
+                    Assigning...
+                  } @else {
+                    <span class="material-symbols-outlined">send</span>
+                    Assign Task to {{ selectedChild?.name ?? "Child" }}
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- COLUMN C: AI Suggested Tasks -->
+          <div
+            class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col h-full"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary"
+                  >auto_awesome</span
+                >
+                <h4 class="font-bold text-lg text-slate-900 dark:text-white">
+                  AI Suggested
+                </h4>
+              </div>
+              <span
+                class="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] font-bold"
+                >SMART REC</span
+              >
+            </div>
+            <div class="space-y-4 flex-1">
+              <!-- Card 1 -->
+              <div
+                class="p-4 bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl space-y-3"
+              >
+                <div class="flex flex-col gap-1 mb-1.5">
+                  <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-violet-600"
+                    >Real-World
+                  </span>
+                  <p
+                    class="text-sm font-bold text-slate-800 dark:text-slate-200"
+                  >
+                    Bridge to Division Basics
+                  </p>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Leo has mastered 2, 5, and 10 tables. This task introduces the
+                  concept of inverse operations.
+                </p>
+                <div class="flex gap-2 pt-2">
+                  <button
+                    class="flex-1 py-2 text-xs font-bold bg-primary text-white rounded-lg hover:brightness-110 transition-all"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="p-4 border border-slate-100 dark:border-slate-800 rounded-2xl space-y-3"
+              >
+                <div class="flex flex-col gap-1 mb-1.5">
+                  <span
+                    class="text-[10px] font-bold uppercase tracking-widest text-violet-600"
+                    >Real-World
+                  </span>
+
+                  <p
+                    class="text-sm font-bold text-slate-800 dark:text-slate-200"
+                  >
+                    Word Problem Contexts
+                  </p>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Applying math facts to real-world scenarios to strengthen
+                  reading comprehension.
+                </p>
+                <div class="flex gap-2 pt-2">
+                  <button
+                    class="flex-1 py-2 text-xs font-bold bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,402 @@
+<div
+  class="bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-300"
+>
+  <main class="flex flex-col items-center justify-center px-4 py-12 md:py-20">
+    <div class="w-full max-w-2xl">
+      <div
+        class="bg-white dark:bg-slate-900 rounded-xl shadow-xl shadow-primary/5 p-8 md:p-12 border border-primary/10"
+      >
+        <!-- Header -->
+        <div class="mb-10 text-center">
+          <h1
+            class="text-3xl md:text-4xl font-black text-slate-700 dark:text-slate-100 mb-3 tracking-tight"
+          >
+            Specialist Registration
+          </h1>
+          <p class="text-slate-600 dark:text-slate-400 text-base">
+            Join our network of professionals to provide exceptional care.
+          </p>
+        </div>
+
+        <!-- ✅ Success Banner -->
+        <div
+          *ngIf="successMessage"
+          class="mb-6 flex items-start gap-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 rounded-lg px-4 py-3 text-sm"
+        >
+          <span class="material-symbols-outlined text-base mt-0.5"
+            >check_circle</span
+          >
+          <span>{{ successMessage }}</span>
+        </div>
+
+        <!-- ❌ Backend General Error Banner -->
+        <div
+          *ngIf="backendErrors.length > 0"
+          class="mb-6 flex items-start gap-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 rounded-lg px-4 py-3 text-sm"
+        >
+          <span class="material-symbols-outlined text-base mt-0.5 shrink-0"
+            >error</span
+          >
+          <ul class="space-y-1 list-none">
+            <li *ngFor="let err of backendErrors">{{ err }}</li>
+          </ul>
+        </div>
+
+        <!-- Form -->
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()"
+          class="space-y-6"
+          novalidate
+        >
+          <!-- Row 1: Full Name + Email -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Full Name -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="fullName"
+                >Full Name</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >person</span
+                >
+                <input
+                  id="fullName"
+                  formControlName="fullName"
+                  (input)="onFieldInput('fullName')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    f['fullName'].invalid && f['fullName'].touched
+                  "
+                  [class.border-slate-200]="
+                    !(f['fullName'].invalid && f['fullName'].touched)
+                  "
+                  [class.dark:border-slate-700]="
+                    !(f['fullName'].invalid && f['fullName'].touched)
+                  "
+                  placeholder="DR. Younis Ahmed"
+                  type="text"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('fullName', 'required')">
+                  Full name is required.
+                </p>
+                <p *ngIf="hasError('fullName', 'minlength')">
+                  Must be at least 3 characters.
+                </p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="email"
+                >Email Address</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >mail</span
+                >
+                <input
+                  id="email"
+                  formControlName="email"
+                  (input)="onFieldInput('email')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    (f['email'].invalid && f['email'].touched) ||
+                    hasBackendError('email')
+                  "
+                  [class.border-slate-200]="
+                    !(
+                      (f['email'].invalid && f['email'].touched) ||
+                      hasBackendError('email')
+                    )
+                  "
+                  [class.dark:border-slate-700]="
+                    !(
+                      (f['email'].invalid && f['email'].touched) ||
+                      hasBackendError('email')
+                    )
+                  "
+                  placeholder="name@specialist.com"
+                  type="email"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('email', 'required')">Email is required.</p>
+                <p *ngIf="hasError('email', 'email')">
+                  Please enter a valid email address.
+                </p>
+                <p *ngFor="let msg of getBackendError('email')">{{ msg }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Street + City -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800"
+          >
+            <!-- Street -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="street"
+                >Street</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >road</span
+                >
+                <input
+                  id="street"
+                  formControlName="street"
+                  (input)="onFieldInput('street')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    (f['street'].invalid && f['street'].touched) ||
+                    hasBackendError('street')
+                  "
+                  [class.border-slate-200]="
+                    !(
+                      (f['street'].invalid && f['street'].touched) ||
+                      hasBackendError('street')
+                    )
+                  "
+                  [class.dark:border-slate-700]="
+                    !(
+                      (f['street'].invalid && f['street'].touched) ||
+                      hasBackendError('street')
+                    )
+                  "
+                  placeholder="ex.. shar3 el 90 elganoby"
+                  type="text"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('street', 'required')">
+                  Street is required.
+                </p>
+                <p *ngFor="let msg of getBackendError('street')">{{ msg }}</p>
+              </div>
+            </div>
+
+            <!-- City -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="city"
+                >City</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >location_city</span
+                >
+                <input
+                  id="city"
+                  formControlName="city"
+                  (input)="onFieldInput('city')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    (f['city'].invalid && f['city'].touched) ||
+                    hasBackendError('city')
+                  "
+                  [class.border-slate-200]="
+                    !(
+                      (f['city'].invalid && f['city'].touched) ||
+                      hasBackendError('city')
+                    )
+                  "
+                  [class.dark:border-slate-700]="
+                    !(
+                      (f['city'].invalid && f['city'].touched) ||
+                      hasBackendError('city')
+                    )
+                  "
+                  placeholder="ex.. new cairo"
+                  type="text"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('city', 'required')">City is required.</p>
+                <p *ngFor="let msg of getBackendError('city')">{{ msg }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Phone + Password -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800"
+          >
+            <!-- Phone Number -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="phoneNumber"
+                >Phone Number</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >phone_enabled</span
+                >
+                <input
+                  id="phoneNumber"
+                  formControlName="phoneNumber"
+                  (input)="onFieldInput('phonenumber')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    (f['phoneNumber'].invalid && f['phoneNumber'].touched) ||
+                    hasBackendError('phonenumber')
+                  "
+                  [class.border-slate-200]="
+                    !(
+                      (f['phoneNumber'].invalid && f['phoneNumber'].touched) ||
+                      hasBackendError('phonenumber')
+                    )
+                  "
+                  [class.dark:border-slate-700]="
+                    !(
+                      (f['phoneNumber'].invalid && f['phoneNumber'].touched) ||
+                      hasBackendError('phonenumber')
+                    )
+                  "
+                  placeholder="01085574562"
+                  type="tel"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('phoneNumber', 'required')">
+                  Phone number is required.
+                </p>
+                <p *ngIf="hasError('phoneNumber', 'pattern')">
+                  Must be a valid Egyptian number (e.g. 01085574562).
+                </p>
+                <p *ngFor="let msg of getBackendError('phonenumber')">
+                  {{ msg }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="flex flex-col gap-1.5">
+              <label
+                class="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                for="password"
+                >Password</label
+              >
+              <div class="relative">
+                <span
+                  class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"
+                  >lock</span
+                >
+                <input
+                  id="password"
+                  formControlName="password"
+                  (input)="onFieldInput('password')"
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                  [class.border-red-400]="
+                    (f['password'].invalid && f['password'].touched) ||
+                    hasBackendError('password')
+                  "
+                  [class.border-slate-200]="
+                    !(
+                      (f['password'].invalid && f['password'].touched) ||
+                      hasBackendError('password')
+                    )
+                  "
+                  [class.dark:border-slate-700]="
+                    !(
+                      (f['password'].invalid && f['password'].touched) ||
+                      hasBackendError('password')
+                    )
+                  "
+                  placeholder="••••••••••••••••"
+                  type="password"
+                />
+              </div>
+              <div class="text-xs text-red-500 mt-0.5 space-y-0.5">
+                <p *ngIf="hasError('password', 'required')">
+                  Password is required.
+                </p>
+                <p *ngIf="hasError('password', 'minlength')">
+                  Minimum 8 characters.
+                </p>
+                <p *ngIf="hasError('password', 'pattern')">
+                  Must contain uppercase, lowercase, number and special
+                  character.
+                </p>
+                <p *ngFor="let msg of getBackendError('password')">{{ msg }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-6">
+            <button
+              type="submit"
+              [disabled]="isLoading"
+              class="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-lg transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group"
+            >
+              <!-- Spinner while loading -->
+              <span
+                *ngIf="isLoading"
+                class="material-symbols-outlined animate-spin text-xl"
+                >progress_activity</span
+              >
+              <span *ngIf="isLoading">Registering...</span>
+
+              <!-- Normal state -->
+              <span *ngIf="!isLoading">Register Specialist Profile</span>
+              <span
+                *ngIf="!isLoading"
+                class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform"
+                >arrow_forward</span
+              >
+            </button>
+          </div>
+        </form>
+
+        <!-- Footer Link -->
+        <div class="mt-8 text-center">
+          <p class="text-sm text-slate-500 dark:text-slate-400">
+            Already have an account?
+            <a
+              class="text-primary font-bold hover:underline"
+              routerLink="/login"
+              >Log in here</a
+            >
+          </p>
+        </div>
+      </div>
+
+      <!-- Policy Links -->
+      <div
+        class="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 text-xs text-slate-400 dark:text-slate-600 uppercase tracking-widest font-semibold"
+      >
+        <a class="hover:text-primary transition-colors" href="#"
+          >Privacy Policy</a
+        >
+        <a class="hover:text-primary transition-colors" href="#"
+          >Terms of Service</a
+        >
+        <a class="hover:text-primary transition-colors" href="#">Help Center</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Background Decorations -->
+  <div
+    class="fixed top-0 right-0 -z-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50 pointer-events-none"
+  ></div>
+  <div
+    class="fixed bottom-0 left-0 -z-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50 pointer-events-none"
+  ></div>
+</div>

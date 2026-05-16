@@ -1,0 +1,83 @@
+<!-- Sidebar Navigation -->
+<aside
+  class="w-64 h-screen border-r border-primary/10 bg-white dark:bg-background-dark/50 flex flex-col"
+>
+  <div class="p-6 flex items-center gap-3">
+    <div
+      class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white"
+    >
+      <span class="material-symbols-outlined">medical_services</span>
+    </div>
+    <div>
+      <h1 class="text-lg font-bold leading-tight">Specialist</h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        Psychological portal
+      </p>
+    </div>
+  </div>
+  <nav class="flex-1 px-4 space-y-2 mt-4">
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg"
+    >
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="text-sm font-medium">Dashboard</span>
+    </a>
+    <a
+      routerLink="/patients"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5"
+    >
+      <span class="material-symbols-outlined">group</span>
+      <span class="text-sm font-medium">Patients</span>
+    </a>
+    <a
+      routerLink="/reports"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5"
+    >
+      <span class="material-symbols-outlined">description</span>
+      <span class="text-sm font-medium">Reports</span>
+    </a>
+    <a
+      routerLink="/messages"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5"
+    >
+      <span class="material-symbols-outlined">mail</span>
+      <span class="text-sm font-medium">Messages</span>
+    </a>
+    <a
+      routerLink="/assigntask"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5"
+    >
+      <span class="material-symbols-outlined">assignment_add</span>
+      <span class="text-sm font-medium">Assign Tasks</span>
+    </a>
+    <a
+      routerLink="/settings"
+      routerLinkActive="active-nav"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/5"
+    >
+      <span class="material-symbols-outlined">settings</span>
+      <span class="text-sm font-medium">Settings</span>
+    </a>
+  </nav>
+  <div class="p-4 border-t border-primary/10">
+    <div class="flex items-center gap-3 p-2">
+      <div
+        class="w-10 h-10 rounded-full bg-slate-200 bg-cover bg-center"
+        data-alt="Portrait of Dr. Amr"
+        style="
+          background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDieVdPy1wh5bqms7Fph-5mr7sFfXglMRUlX-e19Zb24ybVS2Q44khyRgx5c1EwW5I59bY1ptPcINbqlYY0h0VXEBCBg6uMuLMji8XLipKP2vm00kU3fVrbSy_CdiOVSLeHsSKuK3qpp4v349XsGnwnqx9O6R3RABtMjsFMS4KpFHzWmNrxN-opGizYFhQ8EEZWJk2P39DTY_ctmzSfzikEssY61EeRkuGHPAzeOrSX62rC6HErivaZruYjeFhoLfZKcrMqzawTfAuX&quot;);
+        "
+      ></div>
+      <div class="flex flex-col">
+        <p class="text-sm font-semibold">{{ ReSettings?.name }}</p>
+        <p class="text-xs text-slate-500">Psychologist</p>
+      </div>
+    </div>
+  </div>
+</aside>
