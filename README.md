@@ -1,59 +1,103 @@
-# InsideOut
+# InsideOut 🧩
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
+A web & mobile platform connecting **specialists**, **parents**, and **children with learning difficulties**. Specialists assign therapy tasks (predefined, manual, or AI-generated) and generate AI-powered progress reports. Parents track tasks via mobile, and children interact with a Rive-powered avatar in Child Mode.
 
-## Development server
+---
 
-To start a local development server, run:
+## 📖 Overview
 
-```bash
-ng serve
-```
+This system bridges three main users — **Specialists**, **Parents**, and **Children** — into one connected ecosystem:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Specialists (Web App)** — manage their assigned children, track task progress, generate AI-powered reports, and assign new therapy tasks.
+- **Parents (Mobile App)** — receive reports and tasks for their child, mark real-world tasks as completed, and chat directly with the specialist.
+- **Children (Mobile App – Child Mode)** — play assigned games/tasks and interact with an avatar that provides feedback and conversation.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🔄 How It Works
 
-```bash
-ng generate component component-name
-```
+### 1. Specialist – Web Dashboard
+- Each new child is auto-assigned to the specialist who currently has the fewest children, balancing the workload.
+- The specialist dashboard displays all assigned children along with their tasks, separated into **Completed** and **Pending**.
+- The specialist can generate an AI report for any child based on:
+  - The results of completed tasks (`TaskResult`)
+  - The **Mother Note** added for each task
+- A task's status only changes to **Completed** once a Mother Note is provided (see Task Lifecycle below).
+- Once the report is generated, the specialist can send it directly to the parent.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 2. Task Assignment (3 Ways)
+The specialist can assign tasks to a child in three different ways:
 
-```bash
-ng generate --help
-```
+1. **From the Predefined List** — choose an existing task (RealWorld or Mobile type).
+2. **Manual Creation** — create a custom task by hand (title, description, type).
+3. **AI-Generated** — provide a prompt, and AI generates a task (title + description). The specialist can:
+   - Regenerate the task if not satisfied
+   - Edit the generated content (add/remove details) before assigning it
 
-## Building
+### 3. Task Lifecycle (Status Logic)
+A task remains **Pending** until a Mother Note is recorded:
 
-To build the project run:
+- **RealWorld Task** — the parent performs the task with the child in real life, writes a Mother Note, and submits it → status becomes **Completed**. (Mother Note is mandatory.)
+- **Mobile Task** — the child plays the assigned in-app game. Once finished, the game results are automatically sent and stored as the Mother Note → status becomes **Completed**.
 
-```bash
-ng build
-```
+### 4. Parent – Mobile App
+- Receives the AI-generated report from the specialist.
+- Receives the list of tasks assigned to their child (RealWorld & Mobile).
+- For **RealWorld tasks**: adds a Mother Note and marks the task as completed.
+- For **Mobile tasks**: tapping the task launches the corresponding game for the child.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 5. Child Mode (Mobile App)
+A dedicated mode for the child containing games and an interactive **Avatar** (built with Rive). The avatar has two interaction modes:
 
-## Running unit tests
+- **Task Feedback Mode** — shows the tasks the child has completed and collects feedback from the child about them.
+- **Free Conversation Mode** — the avatar chats with the child about any free topic.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### 6. Parent ↔ Specialist Chat
+A real-time, WhatsApp-style chat (powered by **SendBird**) available on both the mobile app and the web dashboard, allowing direct communication between parents and specialists.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## ✨ Key Features
 
-For end-to-end (e2e) testing, run:
+- 🔄 Automatic, load-balanced assignment of children to specialists
+- 📊 AI-generated progress reports based on task results & mother notes
+- 📝 Three task assignment methods: Predefined / Manual / AI-Generated
+- ✅ Status-driven task lifecycle (Pending → Completed via Mother Note)
+- 🎮 Mobile games linked to assigned tasks with automatic result tracking
+- 🤖 Interactive avatar (Rive) with feedback & free-chat modes for children
+- 💬 Real-time chat between parents and specialists
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 🛠️ Tech Stack
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Backend**
+- ASP.NET Core Web API
+- Onion Architecture
+- Entity Framework Core
+- Generic Repository & Unit of Work Pattern
+- JWT Authentication
+- AutoMapper
+- OpenAI API (AI report & task generation)
+- SendBird (real-time chat)
+
+**Web (Specialist Dashboard)**
+- Angular
+
+**Mobile (Parent & Child)**
+- Flutter
+
+**Avatar**
+- Rive.app (interactive avatar animations)
+
+---
+
+## 🏗️ Architecture
+
+The backend follows **Onion Architecture**, separating concerns into layers:
+
+- **Domain** – Entities & core business rules (`Child`, `Specialist`, `Parent`, `SpecialistTask`, `PreDefinedTask`, `TaskResult`, `Report`, etc.)
+- **Services** – Business logic (report generation, task assignment, chat sync, etc.)
+- **Infrastructure** – EF Core, Repository/Unit of Work implementation, external services (OpenAI, SendBird, Email)
+- **API** – Controllers exposing endpoints to Web & Mobile clients
