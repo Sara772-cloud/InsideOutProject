@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@config "../tailwind.config.js";
+
+    body {
+        font-family: 'Lexend', sans-serif;
+    }
