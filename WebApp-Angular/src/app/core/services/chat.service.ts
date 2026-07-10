@@ -22,7 +22,7 @@ export interface ChatMessage {
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly BASE_URL = 'https://clambake-fanning-java.ngrok-free.dev/api';
+  private readonly BASE_URL = 'http://insideout.runasp.net/api';
   private readonly SENDBIRD_APP_ID = 'DA80361B-5BD9-4C6E-8D79-00319DD73F05';
   private readonly headers = { 'ngrok-skip-browser-warning': 'true' };
 

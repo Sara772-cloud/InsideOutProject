@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AllTasksCountService {
   private readonly httpClient=inject(HttpClient);
-  baseUrl: string = 'https://clambake-fanning-java.ngrok-free.dev';
+  baseUrl: string = 'http://insideout.runasp.net';
   getAllTasksCount(specialistId:string):Observable<any>{
     return this.httpClient.get(    
     `${this.baseUrl}/api/Task/specialists/${specialistId}/tasks/count`,

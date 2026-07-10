@@ -39,7 +39,7 @@ export class ReportsComponent implements OnInit {
 
   private readonly generalService = inject(GeneralService);
   private readonly http = inject(HttpClient);
-  private readonly BASE_URL = 'https://clambake-fanning-java.ngrok-free.dev/api';
+  private readonly BASE_URL = 'http://insideout.runasp.net/api';
 
   ngOnInit(): void {
     this.loadParents();

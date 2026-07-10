@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SpecialistInfoService {
     private readonly httpClient=inject(HttpClient);
-  baseUrl: string = 'https://clambake-fanning-java.ngrok-free.dev';
+  baseUrl: string = 'http://insideout.runasp.net';
 getAllSpecialistInfo(id: string): Observable<any> {
   return this.httpClient.get(
     `${this.baseUrl}/api/SpecialistDetails/${id}`,

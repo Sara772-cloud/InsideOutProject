@@ -37,7 +37,7 @@ export interface LoginErrorResponse {
 })
 export class LoginService {
   private readonly API_URL =
-    'https://clambake-fanning-java.ngrok-free.dev/api/Auth/login';
+    'http://insideout.runasp.net/api/Auth/login';
 
   constructor(private http: HttpClient) {}
 

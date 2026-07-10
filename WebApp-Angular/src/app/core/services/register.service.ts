@@ -30,7 +30,7 @@ export interface BackendValidationError {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly BASE_URL = 'https://clambake-fanning-java.ngrok-free.dev';
+  private readonly BASE_URL = 'http://insideout.runasp.net';
 
   constructor(private http: HttpClient) {}
 

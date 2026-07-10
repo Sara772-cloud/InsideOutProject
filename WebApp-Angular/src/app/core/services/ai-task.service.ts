@@ -14,7 +14,7 @@ export interface AiTaskResponse {
 export class AiTaskService {
   private readonly httpClient = inject(HttpClient);
 
-  private readonly apiUrl = 'https://clambake-fanning-java.ngrok-free.dev/api/Assessment/generate-ai-task';
+  private readonly apiUrl = 'http://insideout.runasp.net/api/Assessment/generate-ai-task';
 
   generateAiTask(userPrompt: string): Observable<AiTaskResponse> {
     const params = new HttpParams().set('userPrompt', userPrompt);

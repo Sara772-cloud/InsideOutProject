@@ -10,9 +10,9 @@ export class SettingsService {
 
   private readonly _http = inject(HttpClient);
   private readonly BASE_URL1 =
-    'https://clambake-fanning-java.ngrok-free.dev/api/SpecialistDetails';
+    'http://insideout.runasp.net/api/SpecialistDetails';
   private readonly BASE_URL2 =
-    'https://clambake-fanning-java.ngrok-free.dev/api/Auth/specialist';
+    'http://insideout.runasp.net/api/Auth/specialist';
 
   private readonly headers = { 'ngrok-skip-browser-warning': 'true' };
 

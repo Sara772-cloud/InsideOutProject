@@ -10,7 +10,7 @@ export class AssignTaskService {
   private readonly httpClient = inject(HttpClient);
 
   // ✅ الـ URL الكامل بتاع الـ backend
-  private readonly apiUrl = 'https://clambake-fanning-java.ngrok-free.dev/api/Task/manual-task';
+  private readonly apiUrl = 'http://insideout.runasp.net/api/Task/manual-task';
 
   assignTaskData(taskData: AssignTask): Observable<any> {
     return this.httpClient.post(this.apiUrl, taskData);
