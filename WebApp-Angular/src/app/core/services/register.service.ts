@@ -30,7 +30,7 @@ export interface BackendValidationError {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly BASE_URL = 'http://insideout.runasp.net';
+  private readonly BASE_URL = 'https://insideout.runasp.net';
 
   constructor(private http: HttpClient) {}
 

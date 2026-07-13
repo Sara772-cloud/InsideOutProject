@@ -20,7 +20,7 @@ export class MessagedetailsComponent implements OnInit, OnDestroy {
   private readonly settingsService = inject(SettingsService);
   private readonly http            = inject(HttpClient);
 
-  private readonly BASE_URL = 'http://insideout.runasp.net/api';
+  private readonly BASE_URL = 'https://insideout.runasp.net/api';
   private readonly HANDLER_ID = 'chat_handler';
 
   // State

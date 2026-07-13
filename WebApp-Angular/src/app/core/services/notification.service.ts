@@ -19,7 +19,7 @@ const VAPID_KEY = 'BN8Z3KZsrS5Lz4QwpP82ZfgMEVhoADXnHEgKg3B2PfAQOjG2YLxMk5eEkyrXZ
 })
 export class NotificationService {
   private readonly httpClient = inject(HttpClient);
-  private readonly baseUrl = 'http://insideout.runasp.net';
+  private readonly baseUrl = 'https://insideout.runasp.net';
 
   private readonly firebaseApp: FirebaseApp =
     getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);

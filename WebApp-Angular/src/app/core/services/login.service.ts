@@ -37,7 +37,7 @@ export interface LoginErrorResponse {
 })
 export class LoginService {
   private readonly API_URL =
-    'http://insideout.runasp.net/api/Auth/login';
+    'https://insideout.runasp.net/api/Auth/login';
 
   constructor(private http: HttpClient) {}
 

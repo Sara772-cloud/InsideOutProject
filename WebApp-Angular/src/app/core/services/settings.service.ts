@@ -10,9 +10,9 @@ export class SettingsService {
 
   private readonly _http = inject(HttpClient);
   private readonly BASE_URL1 =
-    'http://insideout.runasp.net/api/SpecialistDetails';
+    'https://insideout.runasp.net/api/SpecialistDetails';
   private readonly BASE_URL2 =
-    'http://insideout.runasp.net/api/Auth/specialist';
+    'https://insideout.runasp.net/api/Auth/specialist';
 
   private readonly headers = { 'ngrok-skip-browser-warning': 'true' };
 
